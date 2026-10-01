@@ -30,11 +30,19 @@ const COLLECTION_NAME = 'siteImages'
 // real photo (or this placeholder) appears.
 const NO_PREVIEW_SVG = `
 <svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
-  <rect width="800" height="600" fill="#E4E8EE"/>
-  <rect x="330" y="228" width="140" height="104" rx="8" fill="none" stroke="#AEB8C4" stroke-width="6"/>
-  <circle cx="368" cy="262" r="12" fill="#AEB8C4"/>
-  <path d="M330 320 L378 274 L410 302 L442 266 L470 320 Z" fill="#AEB8C4"/>
-  <text x="400" y="378" font-family="Arial, Helvetica, sans-serif" font-size="24" fill="#7E8A99" text-anchor="middle">No Preview</text>
+  <defs>
+    <linearGradient id="npBg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0A6EE8"/>
+      <stop offset="1" stop-color="#12203A"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#npBg)"/>
+  <rect x="96" y="100" width="608" height="320" rx="16" fill="rgba(255,255,255,0.10)" stroke="rgba(255,255,255,0.28)"/>
+  <circle cx="146" cy="160" r="9" fill="#4DA3FF"/>
+  <rect x="176" y="151" width="280" height="18" rx="9" fill="rgba(255,255,255,0.5)"/>
+  <rect x="146" y="200" width="400" height="14" rx="7" fill="rgba(255,255,255,0.32)"/>
+  <rect x="146" y="228" width="300" height="14" rx="7" fill="rgba(255,255,255,0.22)"/>
+  <text x="400" y="470" font-family="Arial, Helvetica, sans-serif" font-size="24" fill="rgba(255,255,255,0.85)" text-anchor="middle">No Preview</text>
 </svg>
 `.trim()
 
@@ -46,13 +54,41 @@ const NO_PREVIEW_PLACEHOLDER = `data:image/svg+xml,${encodeURIComponent(NO_PREVI
 // keeps animating even used as a plain <img src="...">.
 const LOADING_SVG = `
 <svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
-  <rect width="800" height="600" fill="#E4E8EE"/>
-  <g transform="translate(400,300)">
-    <circle r="34" fill="none" stroke="#CBD3DD" stroke-width="8"/>
-    <path d="M 0 -34 A 34 34 0 0 1 34 0" fill="none" stroke="#7E8A99" stroke-width="8" stroke-linecap="round">
-      <animateTransform attributeName="transform" type="rotate" from="0 0 0" to="360 0 0" dur="0.8s" repeatCount="indefinite"/>
-    </path>
+  <defs>
+    <linearGradient id="ldBg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0A6EE8"/>
+      <stop offset="1" stop-color="#12203A"/>
+    </linearGradient>
+    <linearGradient id="shimmer" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#ffffff" stop-opacity="0.45"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <clipPath id="cardClip">
+      <rect x="96" y="100" width="608" height="320" rx="16"/>
+    </clipPath>
+  </defs>
+  <rect width="800" height="600" fill="url(#ldBg)"/>
+  <rect x="96" y="100" width="608" height="320" rx="16" fill="rgba(255,255,255,0.10)" stroke="rgba(255,255,255,0.28)"/>
+  <circle cx="146" cy="160" r="9" fill="#4DA3FF"/>
+  <rect x="176" y="151" width="280" height="18" rx="9" fill="rgba(255,255,255,0.5)"/>
+  <rect x="146" y="200" width="400" height="14" rx="7" fill="rgba(255,255,255,0.32)"/>
+  <rect x="146" y="228" width="300" height="14" rx="7" fill="rgba(255,255,255,0.22)"/>
+  <g clip-path="url(#cardClip)">
+    <rect x="-420" y="100" width="420" height="320" fill="url(#shimmer)">
+      <animateTransform attributeName="transform" type="translate" from="0 0" to="1450 0" dur="1.6s" repeatCount="indefinite"/>
+    </rect>
   </g>
+  <text x="372" y="470" font-family="Arial, Helvetica, sans-serif" font-size="24" fill="rgba(255,255,255,0.85)" text-anchor="end">Loading</text>
+  <circle cx="390" cy="464" r="5" fill="#ffffff">
+    <animate attributeName="opacity" values="0.25;1;0.25" dur="1.2s" begin="0s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="408" cy="464" r="5" fill="#ffffff">
+    <animate attributeName="opacity" values="0.25;1;0.25" dur="1.2s" begin="0.2s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="426" cy="464" r="5" fill="#ffffff">
+    <animate attributeName="opacity" values="0.25;1;0.25" dur="1.2s" begin="0.4s" repeatCount="indefinite"/>
+  </circle>
 </svg>
 `.trim()
 
